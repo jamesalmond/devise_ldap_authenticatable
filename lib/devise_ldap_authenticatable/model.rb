@@ -18,7 +18,7 @@ module Devise
       end
 
       def login_with
-        @login_with ||= Devise.mappings[self.class.to_s.underscore.to_sym].to.authentication_keys.first
+        @login_with ||= self.class.authentication_keys.first
         self[@login_with]
       end
 
@@ -27,7 +27,7 @@ module Devise
 
         Devise::LdapAdapter.update_own_password(login_with, @password, current_password)
       end
-      
+
       def reset_password!(new_password, new_password_confirmation)
         if new_password == new_password_confirmation && ::Devise.ldap_update_password
           Devise::LdapAdapter.update_password(login_with, new_password)
